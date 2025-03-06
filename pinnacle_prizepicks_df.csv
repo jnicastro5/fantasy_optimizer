@@ -1,0 +1,129 @@
+name,sport_id,stat,fantasy_line,pinnacle_line,over_american,under_american,hit_percent,over_under
+Isaiah Collier,NBA,Points,12.0,13.5,+117,-155,57.82%,over
+Jaxson Hayes,NBA,Points,8.0,8.5,-108,-122,56.69%,over
+Jordan Hawkins,NBA,Points,10.5,9.5,-139,+104,56.66%,under
+Julius Randle,NBA,Rebounds,6.0,6.5,+100,-133,56.55%,over
+James Harden,NBA,Rebounds,5.0,5.5,+104,-139,56.51%,over
+Shai Gilgeous-Alexander,NBA,Rebounds,5.0,5.5,+108,-143,56.16%,over
+Norman Powell,NBA,Points,21.0,22.5,+112,-150,56.10%,over
+Jordan Hawkins,NBA,Pts+Rebs+Asts,14.5,13.5,-136,+102,55.92%,under
+Artemi Panarin,NHL,Shots On Goal,3.0,3.5,+127,-158,55.89%,over
+Jose Alvarado,NBA,Pts+Rebs+Asts,15.0,15.5,-114,-116,55.87%,over
+Kevin Durant,NBA,Rebounds,5.0,5.5,+110,-147,55.82%,over
+Julius Randle,NBA,Points,16.0,16.5,-114,-116,55.74%,over
+Anthony Edwards,NBA,Assists,5.0,5.5,+112,-150,55.60%,over
+Jalen Williams,NBA,Assists,5.0,5.5,+112,-150,55.60%,over
+CJ McCollum,NBA,Points,19.5,18.5,-130,-102,55.56%,under
+Keyonte George,NBA,Pts+Rebs+Asts,30.5,30.5,+110,-147,55.56%,under
+Kelly Olynyk,NBA,Pts+Rebs+Asts,19.0,19.5,-115,-115,55.52%,over
+Trey Murphy III,NBA,Rebounds,5.0,5.5,+114,-153,55.38%,over
+Jonathan Marchessault,NHL,Shots On Goal,2.5,2.5,-145,+108,55.31%,over
+Luguentz Dort,NBA,Points,10.0,10.5,-101,-131,55.27%,over
+Brice Sensabaugh,NBA,Points,15.0,15.5,-108,-123,55.20%,over
+Keyonte George,NBA,Points,20.5,20.5,+108,-144,55.11%,under
+Stephon Castle,NBA,Points,15.0,15.5,-107,-124,55.08%,over
+Kelly Olynyk,NBA,Rebounds,6.0,6.5,+112,-150,55.02%,over
+LeBron James,NBA,Points,27.0,27.5,-113,-117,54.71%,over
+Kelly Olynyk,NBA,Points,9.0,9.5,+106,-141,54.68%,over
+Kevin Durant,NBA,Pts+Rebs+Asts,35.5,34.5,-125,-106,54.65%,under
+Shai Gilgeous-Alexander,NBA,Assists,6.0,6.5,+117,-156,54.59%,over
+Jack Eichel,NHL,Shots On Goal,3.0,2.5,-173,+127,54.50%,over
+Yves Missi,NBA,Points,8.0,8.5,+110,-147,54.42%,over
+Yves Missi,NBA,Rebounds,8.0,8.5,+110,-148,54.42%,over
+Chris Paul,NBA,Pts+Rebs+Asts,18.5,17.5,-145,+108,54.37%,under
+Kyle Filipowski,NBA,Points,13.5,14.5,+100,-132,54.37%,over
+Jaden McDaniels,NBA,Points,14.0,14.5,+100,-133,54.37%,over
+Yves Missi,NBA,Pts+Rebs+Asts,18.0,18.5,-104,-128,54.37%,over
+Cason Wallace,NBA,Pts+Rebs+Asts,15.0,15.5,-101,-131,54.36%,over
+KJ Martin,NBA,Points,11.5,12.5,+102,-137,54.34%,over
+Ivica Zubac,NBA,Pts+Rebs+Asts,29.5,28.5,-133,+100,54.30%,under
+Zion Williamson,NBA,Assists,5.0,5.5,+125,-168,54.25%,over
+Isaiah Hartenstein,NBA,Pts+Rebs+Asts,27.5,26.5,-135,+102,54.21%,under
+Shai Gilgeous-Alexander,NBA,Pts+Rebs+Asts,44.0,44.5,-114,-116,54.13%,over
+Harrison Barnes,NBA,Pts+Rebs+Asts,14.5,14.5,-137,+104,54.13%,over
+Stephon Castle,NBA,Pts+Rebs+Asts,22.0,22.5,-105,-126,54.12%,over
+Keldon Johnson,NBA,Pts+Rebs+Asts,19.5,20.5,-103,-129,54.06%,over
+Jalen Williams,NBA,Points,21.5,22.5,-103,-129,53.89%,over
+Julius Randle,NBA,Pts+Rebs+Asts,26.5,27.5,-105,-126,53.79%,over
+James Harden,NBA,Points,21.5,22.5,-102,-130,53.76%,over
+Devin Booker,NBA,Pts+Rebs+Asts,39.0,39.5,-108,-123,53.62%,over
+James Harden,NBA,Assists,9.0,8.5,-147,+110,53.61%,over
+Devin Booker,NBA,Points,27.0,26.5,-141,+106,53.61%,over
+Jaden McDaniels,NBA,Rebounds,6.5,6.5,+100,-134,53.51%,under
+Cason Wallace,NBA,Points,9.0,9.5,+117,-156,53.45%,over
+De'Aaron Fox,NBA,Pts+Rebs+Asts,31.0,31.5,-103,-128,53.35%,over
+Zion Williamson,NBA,Pts+Rebs+Asts,36.5,36.5,-133,+100,53.32%,over
+Kawhi Leonard,NBA,Rebounds,5.5,5.5,+100,-132,53.23%,under
+Kris Dunn,NBA,Pts+Rebs+Asts,14.5,14.5,+100,-132,53.23%,under
+Isaiah Collier,NBA,Pts+Rebs+Asts,25.5,27.5,+135,-181,53.19%,over
+Mike Conley,NBA,Assists,5.0,4.5,-147,+110,53.16%,over
+Dorian Finney-Smith,NBA,Pts+Rebs+Asts,14.5,14.5,-101,-132,53.11%,under
+CJ McCollum,NBA,Assists,4.0,3.5,-149,+112,53.09%,over
+Bol Bol,NBA,Points,13.5,14.5,+110,-147,53.07%,over
+Mike Conley,NBA,Pts+Rebs+Asts,15.0,14.5,-137,+102,53.04%,over
+Devin Booker,NBA,Assists,7.5,8.5,+124,-165,53.04%,over
+LeBron James,NBA,Pts+Rebs+Asts,43.0,43.5,-104,-127,53.02%,over
+Anthony Edwards,NBA,Points,27.5,26.5,-150,+112,52.93%,under
+Ben Simmons,NBA,Assists,4.0,3.5,-146,+110,52.86%,over
+Zion Williamson,NBA,Rebounds,7.0,6.5,-140,+106,52.85%,over
+Timo Meier,NHL,Shots On Goal,2.5,2.5,-102,-130,52.81%,under
+Naz Reid,NBA,Rebounds,8.5,8.5,-102,-130,52.81%,under
+Jeremy Sochan,NBA,Points,9.0,8.5,-137,+102,52.76%,over
+Jalen Williams,NBA,Rebounds,5.5,5.5,-102,-129,52.73%,under
+Ivica Zubac,NBA,Points,15.0,14.5,-115,-115,52.63%,under
+CJ McCollum,NBA,Pts+Rebs+Asts,27.0,26.5,-130,-102,52.62%,over
+Norman Powell,NBA,Pts+Rebs+Asts,26.5,27.5,+120,-160,52.60%,under
+Trey Murphy III,NBA,Points,21.0,20.5,-130,-102,52.53%,over
+Jeremy Sochan,NBA,Pts+Rebs+Asts,19.0,18.5,-115,-115,52.53%,under
+Isaiah Collier,NBA,Assists,9.0,9.5,+125,-168,52.53%,over
+James Harden,NBA,Pts+Rebs+Asts,36.5,36.5,-103,-128,52.52%,under
+Brice Sensabaugh,NBA,Pts+Rebs+Asts,21.5,21.5,-103,-128,52.52%,under
+KJ Martin,NBA,Pts+Rebs+Asts,18.5,19.5,+123,-165,52.36%,under
+Ivan Barbashev,NHL,Shots On Goal,1.5,1.5,-105,-127,52.21%,under
+Dougie Hamilton,NHL,Shots On Goal,2.5,2.5,-105,-127,52.21%,under
+Amir Coffey,NBA,Points,8.5,8.5,-105,-126,52.12%,under
+Luguentz Dort,NBA,Pts+Rebs+Asts,15.5,15.5,-126,-105,52.12%,over
+Bradley Beal,NBA,Assists,4.5,5.5,+160,-217,52.12%,under
+Isaiah Hartenstein,NBA,Rebounds,11.5,11.5,-105,-126,52.12%,under
+Nick Richards,NBA,Points,9.5,9.5,-105,-126,52.12%,under
+LeBron James,NBA,Assists,7.5,7.5,-105,-126,52.12%,under
+Mark Stone,NHL,Assists,0.5,0.5,-126,-106,52.01%,over
+Jalen Williams,NBA,Pts+Rebs+Asts,32.5,33.5,+112,-148,51.98%,under
+Keldon Johnson,NBA,Points,13.5,13.5,-106,-125,51.91%,under
+Ivica Zubac,NBA,Rebounds,12.5,12.5,-125,-106,51.91%,over
+Aaron Wiggins,NBA,Pts+Rebs+Asts,20.5,20.5,-125,-106,51.91%,over
+Alexis Lafreniere,NHL,Points,0.5,0.5,-125,-106,51.91%,over
+Zion Williamson,NBA,Points,24.0,23.5,-123,-108,51.89%,over
+Kyle Filipowski,NBA,Pts+Rebs+Asts,26.5,27.5,+112,-150,51.84%,under
+Bradley Beal,NBA,Points,17.5,17.5,-106,-124,51.83%,under
+De'Aaron Fox,NBA,Points,20.5,20.5,-124,-107,51.71%,over
+Dorian Finney-Smith,NBA,Points,8.5,8.5,-107,-124,51.71%,under
+Kawhi Leonard,NBA,Pts+Rebs+Asts,29.5,29.5,-123,-107,51.61%,over
+LeBron James,NBA,Rebounds,8.5,8.5,-107,-123,51.61%,under
+Jaxson Hayes,NBA,Rebounds,5.5,5.5,-123,-108,51.50%,over
+Bol Bol,NBA,Pts+Rebs+Asts,21.5,21.5,-123,-108,51.50%,over
+Naz Reid,NBA,Points,19.5,19.5,-108,-122,51.42%,under
+Chris Paul,NBA,Assists,6.5,6.5,-122,-109,51.31%,over
+Kevin Durant,NBA,Points,25.5,25.5,-109,-121,51.22%,under
+Kyle Filipowski,NBA,Rebounds,9.5,9.5,-109,-121,51.22%,under
+Filip Forsberg,NHL,Shots On Goal,3.5,3.5,-110,-121,51.11%,under
+K'Andre Miller,NHL,Shots On Goal,1.5,1.5,-110,-121,51.11%,under
+Pavel Dorofeyev,NHL,Shots On Goal,2.5,2.5,-110,-121,51.11%,under
+Pavel Dorofeyev,NHL,Points,0.5,0.5,-121,-110,51.11%,over
+Shai Gilgeous-Alexander,NBA,Points,32.5,32.5,-120,-110,51.02%,over
+Nick Richards,NBA,Pts+Rebs+Asts,19.5,19.5,-110,-120,51.02%,under
+Devin Vassell,NBA,Points,15.5,15.5,-119,-111,50.80%,over
+Trey Murphy III,NBA,Pts+Rebs+Asts,31.5,31.5,-111,-119,50.80%,under
+Aaron Wiggins,NBA,Points,14.5,14.5,-112,-118,50.60%,under
+De'Aaron Fox,NBA,Assists,5.5,5.5,-118,-112,50.60%,over
+Keyonte George,NBA,Assists,5.5,5.5,-112,-118,50.60%,under
+Kawhi Leonard,NBA,Points,20.5,20.5,-118,-112,50.60%,over
+Alex Pietrangelo,NHL,Shots On Goal,1.5,1.5,-117,-113,50.40%,over
+Naz Reid,NBA,Pts+Rebs+Asts,30.5,30.5,-113,-117,50.40%,under
+Ryan O'Reilly,NHL,Points,0.5,0.5,-117,-114,50.31%,over
+Anthony Edwards,NBA,Pts+Rebs+Asts,38.5,38.5,-114,-116,50.20%,under
+Isaiah Hartenstein,NBA,Points,11.5,11.5,-116,-114,50.20%,over
+Devin Vassell,NBA,Pts+Rebs+Asts,21.5,21.5,-114,-116,50.20%,under
+Jeremy Sochan,NBA,Rebounds,6.5,6.5,-115,-115,50.00%,under
+Harrison Barnes,NBA,Points,9.5,9.5,-115,-115,50.00%,under
+Trey Murphy III,NBA,Assists,4.5,4.5,-115,-115,50.00%,under
