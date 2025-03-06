@@ -362,16 +362,16 @@ st.title("📊 Fantasy Optimizer")
 underdog_df = fetch_underdog_df(UNDERDOG_TO_PINNACLE_STAT_MAPPING)
 pinnacle_underdog_df = merge_with_pinnacle_df(underdog_df, pinnacle_df)
 
-# Add a checkbox column
-pinnacle_underdog_df[""] = False
-
-# Reorder columns to make checkbox column the first column
-columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
-pinnacle_underdog_df = pinnacle_underdog_df[columns]
-
 # Initialize session state to track selections
 if "selected_rows" not in st.session_state:
     st.session_state.selected_rows = []
+
+    # Add a checkbox column
+    pinnacle_underdog_df[""] = False
+
+    # Reorder columns to make checkbox column the first column
+    columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
+    pinnacle_underdog_df = pinnacle_underdog_df[columns]
 
 # Create an editable data editor
 pinnacle_underdog_data_editor = st.data_editor(
