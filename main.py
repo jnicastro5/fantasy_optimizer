@@ -10,7 +10,8 @@ from scipy.stats import poisson
 import streamlit as st
 
 
-API_KEY = st.secrets["api"]["key"]
+RAPID_API_KEY = st.secrets["pinnacle"]["key"]
+SCRAPEOPS_API_KEY = st.secrets["prizepicks"]["key"]
 
 st.set_page_config(page_title="Daily Fantasy Optimizer", layout="wide")
 
@@ -27,7 +28,7 @@ def fetch_markets_for_sport(sport_id):
     conn = http.client.HTTPSConnection("pinnacle-odds.p.rapidapi.com")
 
     headers = {
-        'x-rapidapi-key': API_KEY,
+        'x-rapidapi-key': RAPID_API_KEY,
         'x-rapidapi-host': "pinnacle-odds.p.rapidapi.com",
         'Accept-Encoding': 'gzip'  # Ensure server sends gzip response
     }
@@ -106,7 +107,7 @@ def fetch_prizepicks_df():
     # Define the URL and parameters for prizepicks api request
     api_url = 'https://proxy.scrapeops.io/v1/'
     params = {
-        'api_key': '9a289b61-44aa-4c18-aa01-f1dc079fe102',
+        'api_key': SCRAPEOPS_API_KEY,
         'url': 'https://api.prizepicks.com/projections?per_page=10000&state_code=AL&single_stat=true&game_mode=prizepools'
     }
 
