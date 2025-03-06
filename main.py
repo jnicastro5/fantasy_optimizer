@@ -362,35 +362,35 @@ st.title("📊 Fantasy Optimizer")
 underdog_df = fetch_underdog_df(UNDERDOG_TO_PINNACLE_STAT_MAPPING)
 pinnacle_underdog_df = merge_with_pinnacle_df(underdog_df, pinnacle_df)
 
-# Add a checkbox column
-pinnacle_underdog_df[""] = False
+# Initialize session state to track selections
+if "selected_rows" not in st.session_state:
+    st.session_state.selected_rows = []
 
-# Reorder columns to make checkbox column the first column
-columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
-pinnacle_underdog_df = pinnacle_underdog_df[columns]
-
-# Display the DataFrame with editable checkboxes
+# Create an editable data editor
 pinnacle_underdog_data_editor = st.data_editor(
     pinnacle_underdog_df,
-    column_config={"": st.column_config.CheckboxColumn("")},
+    column_config={"selected": st.column_config.CheckboxColumn("Select")},
     hide_index=True,
-    key="data_editor",
+    key="data_editor"
 )
 
-# Get the updated DataFrame with selected rows
-selected_rows = pinnacle_underdog_data_editor[pinnacle_underdog_data_editor[""]]
+# Get selected rows
+selected_rows = pinnacle_underdog_data_editor[pinnacle_underdog_data_editor["selected"]]
 
-if len(selected_rows) == 2:
+# Calculate expected value based on selected rows
+num_selected = len(selected_rows)
+if num_selected == 2:
     expected_value = selected_rows["hit_percent"].prod() * 2 - (1 - selected_rows["hit_percent"].prod())
-elif len(selected_rows) == 3:
+elif num_selected == 3:
     expected_value = selected_rows["hit_percent"].prod() * 5 - (1 - selected_rows["hit_percent"].prod())
-elif len(selected_rows) == 4:
+elif num_selected == 4:
     expected_value = selected_rows["hit_percent"].prod() * 9 - (1 - selected_rows["hit_percent"].prod())
-elif len(selected_rows) == 5:
+elif num_selected == 5:
     expected_value = selected_rows["hit_percent"].prod() * 19 - (1 - selected_rows["hit_percent"].prod())
 else:
     expected_value = 0
 
+# Display Expected Value
 st.sidebar.header("Expected Value")
 st.sidebar.write(f"Expected Value: {expected_value:.2f}")
 
