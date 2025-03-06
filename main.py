@@ -382,7 +382,7 @@ pinnacle_underdog_data_editor = st.data_editor(
 )
 
 # Get selected rows
-selected_rows = pinnacle_underdog_data_editor[pinnacle_underdog_data_editor["selected"]]
+selected_rows = pinnacle_underdog_data_editor[pinnacle_underdog_data_editor[""]]
 
 # Calculate expected value based on selected rows
 num_selected = len(selected_rows)
