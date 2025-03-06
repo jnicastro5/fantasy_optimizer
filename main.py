@@ -366,12 +366,8 @@ pinnacle_underdog_df = merge_with_pinnacle_df(underdog_df, pinnacle_df)
 if "selected_rows" not in st.session_state:
     st.session_state.selected_rows = []
 
-    # Add a checkbox column
-    pinnacle_underdog_df[""] = False
-
-    # Reorder columns to make checkbox column the first column
-    columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
-    pinnacle_underdog_df = pinnacle_underdog_df[columns]
+# Add a checkbox column, pre-filling values based on session state
+pinnacle_underdog_df[""] = pinnacle_underdog_df.index.isin(st.session_state.selected_rows)
 
 # Create an editable data editor
 pinnacle_underdog_data_editor = st.data_editor(
@@ -383,6 +379,9 @@ pinnacle_underdog_data_editor = st.data_editor(
 
 # Get selected rows
 selected_rows = pinnacle_underdog_data_editor[pinnacle_underdog_data_editor[""]]
+
+# Update session state with new selections
+st.session_state.selected_rows = selected_rows
 
 # Calculate expected value based on selected rows
 num_selected = len(selected_rows)
