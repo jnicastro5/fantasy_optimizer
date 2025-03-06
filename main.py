@@ -367,7 +367,9 @@ if "selected_rows" not in st.session_state:
     st.session_state.selected_rows = []
 
 # Add a checkbox column, pre-filling values based on session state
-pinnacle_underdog_df[""] = pinnacle_underdog_df.index.isin(st.session_state.selected_rows)
+pinnacle_underdog_df[""] = st.session_state.selected_rows
+columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
+pinnacle_underdog_df = pinnacle_underdog_df[columns]
 
 # Create an editable data editor
 pinnacle_underdog_data_editor = st.data_editor(
