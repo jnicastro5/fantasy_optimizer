@@ -50,6 +50,7 @@ def fetch_markets_for_sport(sport_id):
     return data_json.get("specials", [])
 
 
+@st.cached_data(ttl=600)
 def fetch_pinnacle_df(sport_ids):
     all_markets = []
 
@@ -103,182 +104,114 @@ def fetch_pinnacle_df(sport_ids):
         return None
 
 
+@st.cached_data(ttl=600)
 def fetch_prizepicks_df():
-    # Define the URL and parameters for prizepicks api request
-    api_url = 'https://proxy.scrapeops.io/v1/'
+    scrapeops_url = 'https://proxy.scrapeops.io/v1/'
+
+    prizepicks_url = 'https://api.prizepicks.com/projections?league_id=7&per_page=10000&state_code=AL&single_stat=true&game_mode=prizepools'
+
     params = {
         'api_key': SCRAPEOPS_API_KEY,
-        'url': 'https://api.prizepicks.com/projections?per_page=10000&state_code=AL&single_stat=true&game_mode=prizepools'
+        'url': prizepicks_url
     }
 
-    # Make the request
-    response = requests.get(url=api_url, params=params)
+    proxies = {
+        "http": f"http://scrapeops:{SCRAPEOPS_API_KEY}@residential-proxy.scrapeops.io:8181",
+        "https": f"http://scrapeops:{SCRAPEOPS_API_KEY}@residential-proxy.scrapeops.io:8181"
+    }
 
-    # Parse response content as JSON
-    data = response.json()
+    response = requests.get(url=scrapeops_url, params=params, proxies=proxies, verify=True).json()
 
-    # Fetch the prizepicks stat names and lines
-    lines = data['data']
-    lines_df = pd.json_normalize(lines)
+    data = pd.json_normalize(response['data'])
+    included = pd.json_normalize(response['included'])
+    inc_cop = included[included['type'] == 'new_player'].copy().dropna(axis=1)
+    df = pd.merge(
+        data,
+        inc_cop,
+        how='left',
+        left_on=['relationships.new_player.data.id', 'relationships.new_player.data.type'],
+        right_on=['id', 'type'],
+        suffixes=('', '_new_player')
+    )
 
-    # List of columns to keep from lines_df and their new names
-    lines_columns = {
-        # 'attributes.description': 'opponent',
+    # List of columns to keep and their new names
+    columns = {
+        'attributes.description': 'opponent',
         'attributes.stat_type': 'stat',
-        'attributes.line_score': 'fantasy_line',
+        'attributes.line_score': 'pp_line',
         'attributes.odds_type': 'odds_type',
-        'relationships.new_player.data.id': 'player_id'
+        'attributes.display_name': 'full_name',
+        'attributes.league': 'sport_id',
+        'attributes.team': 'team',
     }
 
-    # Drop all columns except those in lines_columns
-    lines_df.drop(lines_df.columns.difference(lines_columns.keys()), axis=1, inplace=True)
+    # Drop all columns except those in columns dictionary
+    df.drop(df.columns.difference(columns.keys()), axis=1, inplace=True)
 
     # Rename columns
-    lines_df.rename(columns=lines_columns, inplace=True)
+    df.rename(columns=columns, inplace=True)
 
     # Filter for 'standard' odds_type
-    lines_df = lines_df[lines_df['odds_type'] == 'standard']
-    lines_df.drop(columns=['odds_type'], inplace=True)
+    df = df[df['odds_type'] == 'standard']
+    df.drop(columns=['odds_type'], inplace=True)
 
-    # Fetch the prizepicks player names
-    players = data['included']
-    players_df = pd.json_normalize(players)
-
-    # List of columns to keep from players_df and their new names
-    players_columns = {
-        'attributes.display_name': 'name',
-        'attributes.league': 'sport_id',
-        # 'attributes.team': 'team',
-        'attributes.odds_type': 'odds_type',
-        'id': 'player_id'
-    }
-
-    # Drop all columns except those in players_columns
-    players_df.drop(players_df.columns.difference(players_columns.keys()), axis=1, inplace=True)
-
-    # Rename columns
-    players_df.rename(columns=players_columns, inplace=True)
-
-    # Filter unwanted sports
-    players_df = players_df[players_df['sport_id'].isin(["NBA", "NHL"])]
-
-    # Merge lines_df and players_df using player_id column that is common to both
-    final_df = pd.merge(players_df, lines_df, on='player_id', how='inner')
-    final_df.drop(columns=['player_id'], inplace=True)
-
-    return final_df
+    return df
 
 
 def fetch_underdog_df(stat_mapping):
-    underdog_api = 'https://api.underdogfantasy.com/beta/v5/over_under_lines'
+    underdog_url = 'https://api.underdogfantasy.com/beta/v5/over_under_lines'
 
-    # Make the request
-    response = requests.get(url=underdog_api)
+    response = requests.get(url=underdog_url).json()
 
-    # Parse response content as JSON
-    data = response.json()
+    over_under_lines = pd.json_normalize(response['over_under_lines'])
+    options = pd.json_normalize(over_under_lines['options'].explode())
+    over_under_lines = over_under_lines.drop(columns=['options']).join(options, rsuffix='_options')
 
-    # Fetch underdog stat names and lines
-    lines = data['over_under_lines']
-    lines_df = pd.json_normalize(lines)
+    players = pd.json_normalize(response['players'])
+    appearances = pd.json_normalize(response['appearances'])
 
-    # Explode the list so that each entry gets its own row
-    lines_df = lines_df.explode('options')
+    df = pd.merge(
+        pd.merge(
+            players,
+            appearances,
+            how='inner',
+            left_on='id',
+            right_on='player_id'
+        ),
+        over_under_lines,
+        how='inner',
+        left_on='id_y',
+        right_on='over_under.appearance_stat.appearance_id'
+    )
 
-    # Normalize the 'options' column separately
-    options_df = pd.json_normalize(lines_df['options'])
-
-    # Add back to the main DataFrame (reset index first)
-    lines_df = lines_df.reset_index(drop=True)
-    options_df = options_df.reset_index(drop=True)
-
-    # Concatenate the new normalized columns with the original DataFrame
-    lines_df = pd.concat([lines_df, options_df], axis=1)
-
-    # Drop the original 'options' column since it's now expanded
-    lines_df.drop(columns=['options'], inplace=True)
-
-    # List of columns to keep from lines_df and their new names
-    lines_columns = {
-        'stat_value': 'fantasy_line',
-        'over_under.appearance_stat.display_stat': 'stat',
-        'over_under.appearance_stat.appearance_id': 'appearance_id',
-        'payout_multiplier': 'payout_multiplier',
-        'choice_display': 'choice',
-    }
-
-    # Drop all columns except those in lines_columns
-    lines_df.drop(lines_df.columns.difference(lines_columns.keys()), axis=1, inplace=True)
-
-    # Rename columns
-    lines_df.rename(columns=lines_columns, inplace=True)
+    # Filter for choice of 'higher' to avoid 2 rows for each prop
+    df = df[df['choice'] == 'higher']
 
     # Filter for payout_multipliers of 1
-    lines_df['payout_multiplier'] = pd.to_numeric(lines_df['payout_multiplier'], errors='coerce')
-    lines_df = lines_df[lines_df['payout_multiplier'] == 1]
-    lines_df.drop(columns=['payout_multiplier'], inplace=True)
+    df['payout_multiplier'] = pd.to_numeric(df['payout_multiplier'], errors='coerce')
+    df = df[df['payout_multiplier'] == 1]
 
-    # Filter for choice of 'Higher'
-    lines_df = lines_df[lines_df['choice'] == 'Higher']
-    lines_df.drop(columns=['choice'], inplace=True)
+    # Combine first_name and last_name into one column called 'full_name'
+    df['full_name'] = df['first_name'] + ' ' + df['last_name']
 
-    # Convert line from strings to floats
-    lines_df['fantasy_line'] = pd.to_numeric(lines_df['fantasy_line'], errors='coerce')
-
-    # Replace underdog_df stats with pinnacle_df stats
-    lines_df['stat'] = lines_df['stat'].replace(stat_mapping)
-
-    # Fetch underdog player names and sport
-    players = data['players']
-    players_df = pd.json_normalize(players)
-
-    # List of columns to keep from players_df and their new names
-    players_columns = {
-        'id': 'player_id',
-        'first_name': 'first_name',
-        'last_name': 'last_name',
+    # List of columns to keep and their new names
+    columns = {
+        'stat_value': 'ud_line',
+        'over_under.appearance_stat.display_stat': 'stat',
+        'full_name': 'full_name',
         'sport_id': 'sport_id',
     }
 
-    # Drop all columns except those in appearances_columns
-    players_df.drop(players_df.columns.difference(players_columns.keys()), axis=1, inplace=True)
+    # Drop all columns except those in lines_columns
+    df.drop(df.columns.difference(columns.keys()), axis=1, inplace=True)
 
     # Rename columns
-    players_df.rename(columns=players_columns, inplace=True)
+    df.rename(columns=columns, inplace=True)
 
-    # Combine first_name and last_name into one column called 'full_name'
-    players_df['name'] = players_df['first_name'] + ' ' + players_df['last_name']
+    # Replace values in the 'stat' column using the mapping dictionary
+    df['stat'] = df['stat'].replace(stat_mapping)
 
-    # Drop the original 'first_name' and 'last_name' columns if you no longer need them
-    players_df.drop(columns=['first_name', 'last_name'], inplace=True)
-
-    # Fetch underdog appearances
-    appearances = data['appearances']
-    appearances_df = pd.json_normalize(appearances)
-
-    # List of columns to keep from lines_df and their new names
-    appearances_columns = {
-        'id': 'appearance_id',
-        'player_id': 'player_id',
-    }
-
-    # Drop all columns except those in appearances_columns
-    appearances_df.drop(appearances_df.columns.difference(appearances_columns.keys()), axis=1, inplace=True)
-
-    # Rename columns
-    appearances_df.rename(columns=appearances_columns, inplace=True)
-
-    # Merge players_df and appearances_df using player_id column that is common to both
-    final_df = pd.merge(players_df, appearances_df, on='player_id', how='inner')
-    final_df.drop(columns=['player_id'], inplace=True)
-
-    # Merge underdog_df and lines_df using appearance_id column that is common to both
-    final_df = final_df.merge(lines_df, on='appearance_id', how='inner')
-
-    # Drop the 'appearance_id' column
-    final_df.drop(columns=['appearance_id'], inplace=True)
-
-    return final_df
+    return df
 
 
 def merge_with_pinnacle_df(df1, df2):  # df2 must be pinnacle_df
@@ -369,8 +302,8 @@ if "selected_rows" not in st.session_state:
 
 # Add a checkbox column, pre-filling values based on session state
 pinnacle_underdog_df[""] = st.session_state.selected_rows
-columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
-pinnacle_underdog_df = pinnacle_underdog_df[columns]
+display_columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
+pinnacle_underdog_df = pinnacle_underdog_df[display_columns]
 
 # Create an editable data editor
 pinnacle_underdog_data_editor = st.data_editor(
