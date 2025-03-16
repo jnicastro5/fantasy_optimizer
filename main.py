@@ -13,8 +13,8 @@ import yaml
 from yaml.loader import SafeLoader
 
 
-RAPID_API_KEY = st.secrets["pinnacle"]["key"]
 SCRAPEOPS_API_KEY = st.secrets["prizepicks"]["key"]
+RAPID_API_KEY = st.secrets["pinnacle"]["key"]
 
 st.set_page_config(page_title="Daily Fantasy Optimizer", layout="wide")
 
