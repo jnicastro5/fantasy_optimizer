@@ -311,8 +311,6 @@ if st.button("Forgot Password"):
         if username_forgot_pw:
             st.success('New password sent securely')
             # Random password to be transferred to user securely
-        elif not username_forgot_pw:
-            st.error('Username not found')
     except Exception as e:
         st.error(e)
 
