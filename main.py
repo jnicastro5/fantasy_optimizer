@@ -313,15 +313,15 @@ if st.session_state["authentication_status"]:
     # except Exception as e:
     #     st.error(e)
     #
-    # try:
-    #     username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password('Forgot password')
-    #     if username_forgot_pw:
-    #         st.success('New password sent securely')
-    #         # Random password to be transferred to user securely
-    #     elif username_forgot_pw == False:
-    #         st.error('Username not found')
-    # except Exception as e:
-    #     st.error(e)
+    try:
+        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password()
+        if username_forgot_pw:
+            st.success('New password sent securely')
+            # Random password to be transferred to user securely
+        elif not username_forgot_pw:
+            st.error('Username not found')
+    except Exception as e:
+        st.error(e)
     #
     # try:
     #     username_forgot_username, email_forgot_username = authenticator.forgot_username('Forgot username')
