@@ -300,10 +300,13 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
 )
 
-name, authentication_status, username = authenticator.login(location="unrendered")
+try:
+    authenticator.login()
+except Exception as e:
+    st.error(e)
 
 # Handle authentication status
-if authentication_status:
+if st.session_state["authentication_status"]:
     try:
         if authenticator.reset_password(username, 'Reset password'):
             st.success('Password modified successfully')
