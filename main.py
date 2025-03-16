@@ -8,6 +8,9 @@ from io import BytesIO
 import concurrent.futures
 from scipy.stats import poisson
 import streamlit as st
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
 
 
 RAPID_API_KEY = st.secrets["pinnacle"]["key"]
@@ -261,22 +264,22 @@ def merge_with_pinnacle_df(df1, df2):  # df2 must be pinnacle_df
     return merged_df
 
 
-# Basketball - 3
-# Hockey - 4
-# Baseball - 9
-PINNACLE_SPORT_IDS = [3, 4]
-
-# Map underdog_df stat name to pinnacle_df stat name
-UNDERDOG_TO_PINNACLE_STAT_MAPPING = {
-    # Basketball
-    "Pts + Rebs + Asts": "Pts+Rebs+Asts",
-    "3-Pointers Made": "3 Point FG",
-    "Double Doubles": "Double+Double",
-    # Hockey
-    "Shots": "Shots On Goal",
-}
-
-pinnacle_df = fetch_pinnacle_df(PINNACLE_SPORT_IDS)
+# # Basketball - 3
+# # Hockey - 4
+# # Baseball - 9
+# PINNACLE_SPORT_IDS = [3, 4]
+#
+# # Map underdog_df stat name to pinnacle_df stat name
+# UNDERDOG_TO_PINNACLE_STAT_MAPPING = {
+#     # Basketball
+#     "Pts + Rebs + Asts": "Pts+Rebs+Asts",
+#     "3-Pointers Made": "3 Point FG",
+#     "Double Doubles": "Double+Double",
+#     # Hockey
+#     "Shots": "Shots On Goal",
+# }
+#
+# pinnacle_df = fetch_pinnacle_df(PINNACLE_SPORT_IDS)
 
 # prizepicks_df = fetch_prizepicks_df()
 # pinnacle_prizepicks_df = merge_with_pinnacle_df(prizepicks_df, pinnacle_df)
@@ -286,58 +289,80 @@ pinnacle_df = fetch_pinnacle_df(PINNACLE_SPORT_IDS)
 # pinnacle_underdog_df = merge_with_pinnacle_df(underdog_df, pinnacle_df)
 # pinnacle_underdog_df.to_csv("pinnacle_underdog_df.csv", index=False, encoding="utf-8")
 
+# Load credentials from YAML
+with open("credentials.yaml") as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
-st.title("📊 Fantasy Optimizer")
-
-# Add a select box to allow switching between tabs
-# tab_selection = st.selectbox("Select a Tab", ["Pinnacle & Underdog", "Pinnacle & PrizePicks"])
-
-# if tab_selection == "Pinnacle & Underdog":
-underdog_df = fetch_underdog_df(UNDERDOG_TO_PINNACLE_STAT_MAPPING)
-pinnacle_underdog_df = merge_with_pinnacle_df(underdog_df, pinnacle_df)
-
-# Initialize session state to track selections
-if "selected_rows" not in st.session_state:
-    st.session_state.selected_rows = []
-
-# Add a checkbox column, pre-filling values based on session state
-pinnacle_underdog_df[""] = st.session_state.selected_rows
-display_columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
-pinnacle_underdog_df = pinnacle_underdog_df[display_columns]
-
-# Create an editable data editor
-pinnacle_underdog_data_editor = st.data_editor(
-    pinnacle_underdog_df,
-    column_config={"selected": st.column_config.CheckboxColumn("")},
-    hide_index=True,
-    key="data_editor"
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
 )
 
-# Get selected rows
-selected_rows = pinnacle_underdog_data_editor[pinnacle_underdog_data_editor[""]]
+name, authentication_status, username = authenticator.login('Login', 'main')
 
-# Update session state with new selections
-st.session_state.selected_rows = selected_rows
+# Handle authentication status
+if authentication_status:
+    st.sidebar.success(f"Welcome {name}!")
+    authenticator.logout("Logout", "sidebar")
 
-# Calculate expected value based on selected rows
-num_selected = len(selected_rows)
-if num_selected == 2:
-    expected_value = selected_rows["hit_percent"].prod() * 2 - (1 - selected_rows["hit_percent"].prod())
-elif num_selected == 3:
-    expected_value = selected_rows["hit_percent"].prod() * 5 - (1 - selected_rows["hit_percent"].prod())
-elif num_selected == 4:
-    expected_value = selected_rows["hit_percent"].prod() * 9 - (1 - selected_rows["hit_percent"].prod())
-elif num_selected == 5:
-    expected_value = selected_rows["hit_percent"].prod() * 19 - (1 - selected_rows["hit_percent"].prod())
-else:
-    expected_value = 0
+    st.title("📊 Fantasy Optimizer")
 
-# Display Expected Value
-st.sidebar.header("Expected Value")
-st.sidebar.write(f"Expected Value: {expected_value:.2f}")
+    # Add a select box to allow switching between tabs
+    # tab_selection = st.selectbox("Select a Tab", ["Pinnacle & Underdog", "Pinnacle & PrizePicks"])
 
-# elif tab_selection == "Pinnacle & PrizePicks":
-#     prizepicks_df = fetch_prizepicks_df()
-#     pinnacle_prizepicks_df = merge_with_pinnacle_df(prizepicks_df, pinnacle_df)
-#     if pinnacle_prizepicks_df is not None and not pinnacle_prizepicks_df.empty:
-#         st.dataframe(pinnacle_prizepicks_df)  # Display Pinnacle & PrizePicks DataFrame
+    # # if tab_selection == "Pinnacle & Underdog":
+    # underdog_df = fetch_underdog_df(UNDERDOG_TO_PINNACLE_STAT_MAPPING)
+    # pinnacle_underdog_df = merge_with_pinnacle_df(underdog_df, pinnacle_df)
+    #
+    # # Initialize session state to track selections
+    # if "selected_rows" not in st.session_state:
+    #     st.session_state.selected_rows = []
+    #
+    # # Add a checkbox column, pre-filling values based on session state
+    # pinnacle_underdog_df[""] = st.session_state.selected_rows
+    # display_columns = [""] + [col for col in pinnacle_underdog_df.columns if col != ""]
+    # pinnacle_underdog_df = pinnacle_underdog_df[display_columns]
+    #
+    # # Create an editable data editor
+    # pinnacle_underdog_data_editor = st.data_editor(
+    #     pinnacle_underdog_df,
+    #     column_config={"selected": st.column_config.CheckboxColumn("")},
+    #     hide_index=True,
+    #     key="data_editor"
+    # )
+    #
+    # # Get selected rows
+    # selected_rows = pinnacle_underdog_data_editor[pinnacle_underdog_data_editor[""]]
+    #
+    # # Update session state with new selections
+    # st.session_state.selected_rows = selected_rows
+    #
+    # # Calculate expected value based on selected rows
+    # num_selected = len(selected_rows)
+    # if num_selected == 2:
+    #     expected_value = selected_rows["hit_percent"].prod() * 2 - (1 - selected_rows["hit_percent"].prod())
+    # elif num_selected == 3:
+    #     expected_value = selected_rows["hit_percent"].prod() * 5 - (1 - selected_rows["hit_percent"].prod())
+    # elif num_selected == 4:
+    #     expected_value = selected_rows["hit_percent"].prod() * 9 - (1 - selected_rows["hit_percent"].prod())
+    # elif num_selected == 5:
+    #     expected_value = selected_rows["hit_percent"].prod() * 19 - (1 - selected_rows["hit_percent"].prod())
+    # else:
+    #     expected_value = 0
+    #
+    # # Display Expected Value
+    # st.sidebar.header("Expected Value")
+    # st.sidebar.write(f"Expected Value: {expected_value:.2f}")
+
+    # elif tab_selection == "Pinnacle & PrizePicks":
+    #     prizepicks_df = fetch_prizepicks_df()
+    #     pinnacle_prizepicks_df = merge_with_pinnacle_df(prizepicks_df, pinnacle_df)
+    #     if pinnacle_prizepicks_df is not None and not pinnacle_prizepicks_df.empty:
+    #         st.dataframe(pinnacle_prizepicks_df)  # Display Pinnacle & PrizePicks DataFrame
+
+elif authentication_status is False:
+    st.sidebar.error("Incorrect username or password")
+elif authentication_status is None:
+    st.sidebar.warning("Please enter your credentials")
