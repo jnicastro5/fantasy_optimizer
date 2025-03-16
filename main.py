@@ -404,6 +404,6 @@ if st.session_state["authentication_status"]:
     #         st.dataframe(pinnacle_prizepicks_df)  # Display Pinnacle & PrizePicks DataFrame
 
 elif st.session_state["authentication_status"] is False:
-    st.sidebar.error("Incorrect username or password")
-elif st.session_state["authentication_status"] is None:
-    st.sidebar.warning("Please enter your credentials")
+    st.error("Incorrect username or password")
+# elif st.session_state["authentication_status"] is None:
+#     st.warning("Please enter your credentials")
