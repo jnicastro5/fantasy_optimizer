@@ -290,7 +290,7 @@ def merge_with_pinnacle_df(df1, df2):  # df2 must be pinnacle_df
 # pinnacle_underdog_df.to_csv("pinnacle_underdog_df.csv", index=False, encoding="utf-8")
 
 # Load credentials from YAML
-with open("C:/Users/12565/PycharmProjects/rapid_api/credentials.yml") as file:
+with open("credentials.yml") as file:
     config = yaml.safe_load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
