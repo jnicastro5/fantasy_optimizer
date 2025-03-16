@@ -318,7 +318,7 @@ if st.button("Forgot Password"):
 
 if st.button("Sign Up"):
     try:
-        new_email, new_username, new_name = authenticator.register_user()
+        new_email, new_username, new_name = authenticator.register_user(password_hint=False)
         if new_email:
             st.success('User registered successfully')
     except Exception as e:
