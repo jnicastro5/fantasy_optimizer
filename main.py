@@ -53,7 +53,7 @@ def fetch_markets_for_sport(sport_id):
     return data_json.get("specials", [])
 
 
-@st.cached_data(ttl=600)
+@st.cache_data(ttl=600)
 def fetch_pinnacle_df(sport_ids):
     all_markets = []
 
@@ -107,7 +107,7 @@ def fetch_pinnacle_df(sport_ids):
         return None
 
 
-@st.cached_data(ttl=600)
+@st.cache_data(ttl=600)
 def fetch_prizepicks_df():
     scrapeops_url = 'https://proxy.scrapeops.io/v1/'
 
