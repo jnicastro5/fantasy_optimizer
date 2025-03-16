@@ -291,7 +291,7 @@ def merge_with_pinnacle_df(df1, df2):  # df2 must be pinnacle_df
 
 # Load credentials from YAML
 with open("credentials.yml") as file:
-    config = yaml.safe_load(file, Loader=SafeLoader)
+    config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
     config['credentials'],
