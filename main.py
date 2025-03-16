@@ -307,8 +307,8 @@ except Exception as e:
 
 if st.button("Forgot Password"):
     try:
-        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password()
-        if username_forgot_pw:
+        username, email, random_password = authenticator.forgot_password()
+        if username:
             st.success('New password sent securely')
             # Random password to be transferred to user securely
     except Exception as e:
