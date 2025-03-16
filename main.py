@@ -304,6 +304,44 @@ name, authentication_status, username = authenticator.login(location='main')
 
 # Handle authentication status
 if authentication_status:
+    try:
+        if authenticator.reset_password(username, 'Reset password'):
+            st.success('Password modified successfully')
+    except Exception as e:
+        st.error(e)
+
+    try:
+        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password('Forgot password')
+        if username_forgot_pw:
+            st.success('New password sent securely')
+            # Random password to be transferred to user securely
+        elif username_forgot_pw == False:
+            st.error('Username not found')
+    except Exception as e:
+        st.error(e)
+
+    try:
+        username_forgot_username, email_forgot_username = authenticator.forgot_username('Forgot username')
+        if username_forgot_username:
+            st.success('Username sent securely')
+            # Username to be transferred to user securely
+        else:
+            st.error('Email not found')
+    except Exception as e:
+        st.error(e)
+
+    try:
+        if authenticator.register_user('Register user', preauthorization=False):
+            st.success('User registered successfully')
+    except Exception as e:
+        st.error(e)
+
+    try:
+        if authenticator.update_user_details(username, 'Update user details'):
+            st.success('Entries updated successfully')
+    except Exception as e:
+        st.error(e)
+
     st.sidebar.success(f"Welcome {name}!")
     authenticator.logout("Logout", "sidebar")
 
