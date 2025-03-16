@@ -305,14 +305,22 @@ try:
 except Exception as e:
     st.error(e)
 
-if st.button("Reset Password"):
+if st.button("Forgot Password"):
     try:
-        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password(key="Reset password")
+        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password()
         if username_forgot_pw:
             st.success('New password sent securely')
             # Random password to be transferred to user securely
         elif not username_forgot_pw:
             st.error('Username not found')
+    except Exception as e:
+        st.error(e)
+
+if st.button("Sign Up"):
+    try:
+        new_email, new_username, new_name = authenticator.register_user()
+        if new_email:
+            st.success('User registered successfully')
     except Exception as e:
         st.error(e)
 
