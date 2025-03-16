@@ -305,15 +305,16 @@ try:
 except Exception as e:
     st.error(e)
 
-try:
-    username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password()
-    if username_forgot_pw:
-        st.success('New password sent securely')
-        # Random password to be transferred to user securely
-    elif not username_forgot_pw:
-        st.error('Username not found')
-except Exception as e:
-    st.error(e)
+if st.button("Reset Password"):
+    try:
+        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password()
+        if username_forgot_pw:
+            st.success('New password sent securely')
+            # Random password to be transferred to user securely
+        elif not username_forgot_pw:
+            st.error('Username not found')
+    except Exception as e:
+        st.error(e)
 
 # Handle authentication status
 if st.session_state["authentication_status"]:
