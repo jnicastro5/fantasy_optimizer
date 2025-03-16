@@ -307,7 +307,7 @@ except Exception as e:
 
 if st.button("Reset Password"):
     try:
-        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password()
+        username_forgot_pw, email_forgot_password, random_password = authenticator.forgot_password(key="Reset password")
         if username_forgot_pw:
             st.success('New password sent securely')
             # Random password to be transferred to user securely
