@@ -300,7 +300,7 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days'],
 )
 
-name, authentication_status, username = authenticator.login()
+name, authentication_status, username = authenticator.login(location="unrendered")
 
 # Handle authentication status
 if authentication_status:
