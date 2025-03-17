@@ -323,41 +323,43 @@ def merge_with_pinnacle_df(df1, df2):  # df2 must be pinnacle_df
 # pinnacle_underdog_df = merge_with_pinnacle_df(underdog_df, pinnacle_df)
 # pinnacle_underdog_df.to_csv("pinnacle_underdog_df.csv", index=False, encoding="utf-8")
 
-# Load credentials from YAML
-with open("credentials.yml") as file:
-    config = yaml.load(file, Loader=SafeLoader)
+if not st.session_state["authentication_status"]:
 
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-)
+    # Load credentials from YAML
+    with open("credentials.yml") as file:
+        config = yaml.load(file, Loader=SafeLoader)
 
-try:
-    authenticator.login()
-except Exception as e:
-    st.error(e)
+    authenticator = stauth.Authenticate(
+        config['credentials'],
+        config['cookie']['name'],
+        config['cookie']['key'],
+        config['cookie']['expiry_days'],
+    )
 
-if st.button("Forgot Password"):
     try:
-        forgot_username, email, random_password = authenticator.forgot_password()
-        if forgot_username:
-            # Send the random password via email
-            subject = "Your New Password"
-            body = f"Hello {forgot_username},\n\nYour new password is: {random_password}\n\nPlease change it after logging in."
-            send_email(email, subject, body)
-            st.success('New password sent securely')
+        authenticator.login()
     except Exception as e:
         st.error(e)
 
-if st.button("Sign Up"):
-    try:
-        new_email, new_username, new_name = authenticator.register_user(password_hint=False)
-        if new_email:
-            st.success('User registered successfully')
-    except Exception as e:
-        st.error(e)
+    if st.button("Forgot Password"):
+        try:
+            forgot_username, email, random_password = authenticator.forgot_password()
+            if forgot_username:
+                # Send the random password via email
+                subject = "Your New Password"
+                body = f"Hello {forgot_username},\n\nYour new password is: {random_password}\n\nPlease change it after logging in."
+                send_email(email, subject, body)
+                st.success('New password sent securely')
+        except Exception as e:
+            st.error(e)
+
+    if st.button("Sign Up"):
+        try:
+            new_email, new_username, new_name = authenticator.register_user(password_hint=False)
+            if new_email:
+                st.success('User registered successfully')
+        except Exception as e:
+            st.error(e)
 
 # Handle authentication status
 if st.session_state["authentication_status"]:
