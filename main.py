@@ -11,12 +11,46 @@ import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 SCRAPEOPS_API_KEY = st.secrets["prizepicks"]["key"]
 RAPID_API_KEY = st.secrets["pinnacle"]["key"]
 
 st.set_page_config(page_title="Daily Fantasy Optimizer", layout="wide")
+
+
+# Function to send email
+def send_email(to_email, subject, body):
+    from_email = "hoboheaters@gmail.com"
+    from_password = st.secrets["email"]["password"]
+
+    # Set up the SMTP server
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587  # TLS
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Secure the connection
+        server.login(from_email, from_password)
+
+        # Craft the email message
+        msg = MIMEMultipart()
+        msg['From'] = from_email
+        msg['To'] = to_email
+        msg['Subject'] = subject
+
+        # Add the message body
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Send the email
+        server.sendmail(from_email, to_email, msg.as_string())
+        server.quit()
+        st.success(f"Password sent to {to_email}")
+
+    except Exception as e:
+        st.error(f"Failed to send email: {e}")
 
 
 def decimal_to_american(decimal_odds):
@@ -307,10 +341,13 @@ except Exception as e:
 
 if st.button("Forgot Password"):
     try:
-        username, email, random_password = authenticator.forgot_password()
-        if username:
+        forgot_username, email, random_password = authenticator.forgot_password()
+        if forgot_username:
+            # Send the random password via email
+            subject = "Your New Password"
+            body = f"Hello {forgot_username},\n\nYour new password is: {random_password}\n\nPlease change it after logging in."
+            send_email(email, subject, body)
             st.success('New password sent securely')
-            # Random password to be transferred to user securely
     except Exception as e:
         st.error(e)
 
@@ -353,6 +390,14 @@ if st.session_state["authentication_status"]:
     #     st.error(e)
 
     authenticator.logout()
+
+    if st.button("Reset Password"):
+        try:
+            if authenticator.reset_password(st.session_state['username']):
+                st.success('Password modified successfully')
+        except Exception as e:
+            st.error(e)
+
     st.write(f'Welcome *{st.session_state["name"]}*')
 
     st.title("📊 Fantasy Optimizer")
