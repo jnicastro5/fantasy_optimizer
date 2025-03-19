@@ -360,8 +360,8 @@ if not st.session_state["authentication_status"]:
 
                 st.success('Registered successfully!')
 
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
 
 # Handle authentication status
 if st.session_state["authentication_status"]:
