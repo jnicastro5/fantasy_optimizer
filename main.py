@@ -348,28 +348,26 @@ if not st.session_state["authentication_status"]:
             subject = "Your New Password"
             body = f"Hello {forgot_username},\n\nYour new password is: {random_password}\n\nPlease change it after logging in."
             send_email(email, subject, body)
-            st.success('New password sent securely')
     except Exception as e:
         st.error(e)
 
-    if st.button("Sign Up"):
-        try:
-            new_email, new_username, new_name = authenticator.register_user(password_hint=False)
-            if new_email:
-                # Update credentials in memory
-                config['credentials']['usernames'][new_username] = {
-                    'email': new_email,
-                    'name': new_name,
-                    'password': authenticator.credentials['usernames'][new_username]['password']
-                }
+    try:
+        new_email, new_username, new_name = authenticator.register_user(password_hint=False)
+        if new_email:
+            # Update credentials in memory
+            config['credentials']['usernames'][new_username] = {
+                'email': new_email,
+                'name': new_name,
+                'password': authenticator.credentials['usernames'][new_username]['password']
+            }
 
-                # Save new credentials back to file
-                with open("credentials.yml") as file:
-                    yaml.dump(config, file, default_flow_style=False)
+            # Save new credentials back to file
+            with open("credentials.yml") as file:
+                yaml.dump(config, file, default_flow_style=False)
 
-                st.success('User registered successfully')
-        except Exception as e:
-            st.error(e)
+            st.success('User registered successfully')
+    except Exception as e:
+        st.error(e)
 
 # Handle authentication status
 if st.session_state["authentication_status"]:
