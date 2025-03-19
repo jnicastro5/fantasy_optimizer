@@ -354,7 +354,6 @@ if not st.session_state["authentication_status"]:
     try:
         new_email, new_username, new_name = authenticator.register_user(password_hint=False)
         if new_email:
-            st.write(config)
             with open('credentials.yml', 'w') as file:
                 yaml.dump(config, file, default_flow_style=False)
 
