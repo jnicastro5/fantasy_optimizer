@@ -354,20 +354,11 @@ if not st.session_state["authentication_status"]:
     try:
         new_email, new_username, new_name = authenticator.register_user(password_hint=False)
         if new_email:
-            # Update credentials in memory
-            config['credentials']['usernames'][new_username] = {
-                'email': new_email,
-                'name': new_name,
-                'password': authenticator.credentials['usernames'][new_username]['password']
-            }
-
-            # Save new credentials back to file
-            with open("credentials.yml") as file:
+            with open('../credentials.yaml', 'w') as file:
                 yaml.dump(config, file, default_flow_style=False)
 
-            st.success('User registered successfully')
     except Exception as e:
-        st.error(e)
+        st.error(f"An error occurred: {e}")
 
 # Handle authentication status
 if st.session_state["authentication_status"]:
