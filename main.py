@@ -344,6 +344,9 @@ if not st.session_state["authentication_status"]:
     if st.button("Forgot Password"):
         try:
             forgot_username, email, random_password = authenticator.forgot_password()
+            st.write(
+                f"Forgot Username: {forgot_username}, Email: {email}, Random Password: {random_password}")  # Debug print
+
             if forgot_username:
                 st.write('hi')
                 # Send the random password via email
