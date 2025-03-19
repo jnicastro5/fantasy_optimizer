@@ -341,21 +341,20 @@ if not st.session_state["authentication_status"]:
     except Exception as e:
         st.error(e)
 
-    if st.button("Forgot Password"):
-        try:
-            forgot_username, email, random_password = authenticator.forgot_password()
-            st.write(
-                f"Forgot Username: {forgot_username}, Email: {email}, Random Password: {random_password}")  # Debug print
+    try:
+        forgot_username, email, random_password = authenticator.forgot_password()
+        st.write(
+            f"Forgot Username: {forgot_username}, Email: {email}, Random Password: {random_password}")  # Debug print
 
-            if forgot_username:
-                st.write('hi')
-                # Send the random password via email
-                subject = "Your New Password"
-                body = f"Hello {forgot_username},\n\nYour new password is: {random_password}\n\nPlease change it after logging in."
-                send_email(email, subject, body)
-                st.success('New password sent securely')
-        except Exception as e:
-            st.error(e)
+        if forgot_username:
+            st.write('hi')
+            # Send the random password via email
+            subject = "Your New Password"
+            body = f"Hello {forgot_username},\n\nYour new password is: {random_password}\n\nPlease change it after logging in."
+            send_email(email, subject, body)
+            st.success('New password sent securely')
+    except Exception as e:
+        st.error(e)
 
     if st.button("Sign Up"):
         try:
