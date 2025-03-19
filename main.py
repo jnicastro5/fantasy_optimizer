@@ -354,8 +354,10 @@ if not st.session_state["authentication_status"]:
     try:
         new_email, new_username, new_name = authenticator.register_user(password_hint=False)
         if new_email:
-            with open('../credentials.yaml', 'w') as file:
+            with open('credentials.yaml', 'w') as file:
                 yaml.dump(config, file, default_flow_style=False)
+
+            st.success('Registered successfully!')
 
     except Exception as e:
         st.error(f"An error occurred: {e}")
