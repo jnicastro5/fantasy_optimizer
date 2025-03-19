@@ -345,6 +345,7 @@ if not st.session_state["authentication_status"]:
         try:
             forgot_username, email, random_password = authenticator.forgot_password()
             if forgot_username:
+                st.write('hi')
                 # Send the random password via email
                 subject = "Your New Password"
                 body = f"Hello {forgot_username},\n\nYour new password is: {random_password}\n\nPlease change it after logging in."
@@ -361,7 +362,7 @@ if not st.session_state["authentication_status"]:
                 config['credentials']['usernames'][new_username] = {
                     'email': new_email,
                     'name': new_name,
-                    'password': authenticator.credentials['usernames'][new_username]['password']  # Hashed password
+                    'password': authenticator.credentials['usernames'][new_username]['password']
                 }
 
                 # Save new credentials back to file
@@ -374,34 +375,6 @@ if not st.session_state["authentication_status"]:
 
 # Handle authentication status
 if st.session_state["authentication_status"]:
-    # try:
-    #     if authenticator.reset_password(username, 'Reset password'):
-    #         st.success('Password modified successfully')
-    # except Exception as e:
-    #     st.error(e)
-    #
-    # try:
-    #     username_forgot_username, email_forgot_username = authenticator.forgot_username('Forgot username')
-    #     if username_forgot_username:
-    #         st.success('Username sent securely')
-    #         # Username to be transferred to user securely
-    #     else:
-    #         st.error('Email not found')
-    # except Exception as e:
-    #     st.error(e)
-    #
-    # try:
-    #     if authenticator.register_user('Register user', preauthorization=False):
-    #         st.success('User registered successfully')
-    # except Exception as e:
-    #     st.error(e)
-    #
-    # try:
-    #     if authenticator.update_user_details(username, 'Update user details'):
-    #         st.success('Entries updated successfully')
-    # except Exception as e:
-    #     st.error(e)
-
     authenticator.logout()
 
     if st.button("Reset Password"):
